@@ -1,0 +1,38 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+void dfs(vector<vector<int>>& graph, vector<bool>& visited, int startNode) {
+    visited[startNode] = true;
+    cout << startNode << " ";
+
+    for (int neighbor : graph[startNode]) {
+        if (!visited[neighbor]) {
+            dfs(graph, visited, neighbor);
+        }
+    }
+}
+
+int main() {
+    int V, E;
+    cin >> V >> E;
+
+    vector<vector<int>> graph(V);
+    vector<bool> visited(V, false);
+
+    for (int i = 0; i < E; ++i) {
+        int v, w;
+        cin >> v >> w;
+        graph[v].push_back(w);
+    }
+
+    int startVertex;
+    cin >> startVertex;
+
+    cout << "Depth First Traversal starting from vertex " << startVertex << ":\n";
+    dfs(graph, visited, startVertex);
+    cout << endl;
+
+    return 0;
+}

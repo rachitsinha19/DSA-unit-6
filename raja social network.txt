@@ -1,0 +1,52 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+vector<vector<int>> adjacencyMatrix;
+vector<bool> visited;
+int maxChainLength = 0;
+
+void dfs(int user, int chainLength, int n) {
+    visited[user] = true;
+    chainLength++;
+
+    if (chainLength > maxChainLength) {
+        maxChainLength = chainLength;
+    }
+
+    for (int i = 1; i <= n; i++) {
+        if (adjacencyMatrix[user][i] && !visited[i]) {
+            dfs(i, chainLength, n);
+        }
+    }
+}
+
+int main() {
+    int n, m;
+    cin >> n >> m;
+
+    adjacencyMatrix.resize(n + 1, vector<int>(n + 1, 0));
+    visited.resize(n + 1, false);
+
+    for (int i = 0; i < m; i++) {
+        int u, v;
+        cin >> u >> v;
+
+        // Assuming the friendship is bidirectional
+        adjacencyMatrix[u][v] = 1;
+        adjacencyMatrix[v][u] = 1;
+    }
+
+    for (int i = 1; i <= n; i++) {
+        // Reset visited array for each starting user
+        fill(visited.begin(), visited.end(), false);
+
+        dfs(i, 0, n);
+    }
+
+    // The corrected code subtracts 1 from maxChainLength since it represents the number of edges, not nodes.
+    cout << maxChainLength - 1 << endl;
+
+    return 0;
+}
